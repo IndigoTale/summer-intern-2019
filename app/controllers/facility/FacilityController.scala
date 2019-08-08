@@ -80,7 +80,7 @@ class FacilityController @javax.inject.Inject()(
         Ok(views.html.site.facility.edit.Main(vv, formForFacilityEdit))
     }
   }
-  def add = Action.async { implicit request =>
+  def add() = Action.async { implicit request =>
     for {
       locSeq <- daoLocation.filterByIds(Location.Region.IS_PREF_ALL)
     } yield {
@@ -91,7 +91,7 @@ class FacilityController @javax.inject.Inject()(
         Ok(views.html.site.facility.add.Main(vv,formForFacilityAdd))
     }
   }
-  def create = Action.async { implicit request =>
+  def create() = Action.async { implicit request =>
     formForFacilityAdd.bindFromRequest.fold(
       errors => {
         for {

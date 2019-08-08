@@ -51,18 +51,6 @@ class FacilityDAO @javax.inject.Inject()(
         .map(p => (p.locationId, p.name, p.address, p.description)) += ((form.locationId.get, form.name.get, form.address.get, form.description.get))
     }
 
-  def insert(form: FacilityEdit): Future[Facility.Id] = {
-    val insertData: Facility = Facility(None, form.locationId.get, form.name.get,  form.address.get,  form.description.get)
-    db.run {
-      //      data.id match {
-      //        case None    => slick returning slick.map(_.id) += data
-      //        case Some(_) => DBIO.failed(
-      //          new IllegalArgumentException("The given object is already assigned id.")
-      //        )
-      //      }
-      slick returning slick.map(_.id) += insertData
-    }
-  }
   /**
    * 施設を全件取得する
    */
