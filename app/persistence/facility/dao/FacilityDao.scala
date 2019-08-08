@@ -14,7 +14,10 @@ import slick.jdbc.JdbcProfile
 import play.api.db.slick.DatabaseConfigProvider
 import play.api.db.slick.HasDatabaseConfigProvider
 import persistence.facility.model.Facility
+import persistence.facility.model.FacilityEdit
+import persistence.facility.model.FacilityAdd
 import persistence.geo.model.Location
+import persistence.facility.model
 
 // DAO: 施設情報
 //~~~~~~~~~~~~~~~~~~
@@ -36,7 +39,30 @@ class FacilityDAO @javax.inject.Inject()(
         .filter(_.id === id)
         .result.headOption
     }
+  def update(id:Long,form:FacilityEdit) = 
+    db.run{
+      slick.filter(_.id === id)
+        .map(p => (p.name,p.address,p.description,p.locationId))
+        .update((form.name.get,form.address.get,form.description.get,form.locationId.get))
+    }
+  def create (form:FacilityAdd) =
+    db.run {
+      slick
+        .map(p => (p.locationId, p.name, p.address, p.description)) += ((form.locationId.get, form.name.get, form.address.get, form.description.get))
+    }
 
+  def insert(form: FacilityEdit): Future[Facility.Id] = {
+    val insertData: Facility = Facility(None, form.locationId.get, form.name.get,  form.address.get,  form.description.get)
+    db.run {
+      //      data.id match {
+      //        case None    => slick returning slick.map(_.id) += data
+      //        case Some(_) => DBIO.failed(
+      //          new IllegalArgumentException("The given object is already assigned id.")
+      //        )
+      //      }
+      slick returning slick.map(_.id) += insertData
+    }
+  }
   /**
    * 施設を全件取得する
    */

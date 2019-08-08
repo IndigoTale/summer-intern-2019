@@ -1,0 +1,34 @@
+@import views.html.helper
+@import model.site.facility.SiteViewValueFacilityEdit
+@import play.api.data.Form
+
+@import persistence.facility.model.FacilityEdit
+@(vv: SiteViewValueFacilityEdit, form: Form[FacilityEdit])(implicit messages: play.api.i18n.Messages)
+
+@views.html.common.layout.InnerContent("site-app-new-user-form","content"){
+@** 見出し *@
+<h3 class="content__section header">
+    <span class="header__title">施設編集画面</span>
+</h3>
+<div class="content__section form">
+    @if(vv.facility.isEmpty == false) {
+    @helper.form( action = controllers.facility.routes.FacilityController.update(vv.facility.get.id.get)) {
+    @** --[ 入力項目 ]---------------------------------------------------------- *@
+    @helper.inputText(form("name"), '_label -> "施設名", 'placeholder -> vv.facility.get.name)
+    @helper.inputText(form("address"), '_label -> "住所", 'placeholder -> vv.facility.get.address)
+    @helper.inputText(form("locationId"), '_label -> "地域コード", 'placeholder -> vv.facility.get.locationId)
+    form("locationIdValid")
+    @helper.inputText(form("description"), '_label -> "備考", 'placeholder -> vv.facility.get.description)
+
+    <button class="button">編集</button>
+    <button class="button"><a href="/facility/show/@vv.facility.get.id.get">戻る</a></button>
+    <button class="button"><a href="/facility/delete/@vv.facility.get.id.get">削除</a></button>
+    }
+    } else {
+    <div>
+        <p>施設情報は存在しません。</p>
+        <p>Facility is not found.</p>
+    </div>
+    }
+</div>
+}

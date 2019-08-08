@@ -1,0 +1,19 @@
+@import model.site.facility.SiteViewValueFacilityAdd
+@import play.api.data.Form
+@import persistence.facility.model.FacilityAdd
+
+
+@** 施設追加 *@
+@(vv: SiteViewValueFacilityAdd, form: Form[FacilityAdd])(implicit messages: play.api.i18n.Messages)
+@views.html.common.layout.Default(vv.layout) {
+    @views.html.common.layout.ContentLayout(
+        id = "site-facility-edit",
+        content = tplContent
+    )
+}
+
+@** テンプレート: コンテンツ *@
+@tplContent = {
+    @views.html.site.facility.add._Add(vv, form)
+}
+

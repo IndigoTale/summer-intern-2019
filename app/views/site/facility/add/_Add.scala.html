@@ -1,0 +1,29 @@
+@import views.html.helper
+@import model.site.facility.SiteViewValueFacilityAdd
+@import play.api.data.Form
+@import persistence.facility.model.FacilityAdd
+
+@(vv: SiteViewValueFacilityAdd, form: Form[FacilityAdd])(implicit messages: play.api.i18n.Messages)
+
+@views.html.common.layout.InnerContent("site-app-new-user-form","content"){
+    @** 見出し *@
+    <h3 class="content__section header">
+        <span class="header__title">施設編集画面</span>
+    </h3>
+    @helper.form( action = controllers.facility.routes.FacilityController.create) {
+        <div>
+            @helper.select(
+            field = form("locationId"),
+            options = vv.location.map(v => (v.id, v.nameCity.get)),
+            '_label -> "市",
+            '_default -> "未選択",
+            '_showConstraints -> false
+            )
+            @helper.inputText(form("name"))
+            @helper.inputText(form("address"))
+            @helper.inputText(form("description"))
+            <button class="button">追加</button>
+            <button class="button"><a href="/facility/list">戻る</a></button>
+        </div>
+    }
+}
