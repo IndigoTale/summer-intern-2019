@@ -1,0 +1,42 @@
+@import model.site.organization.SiteViewValueOrganizationList
+
+@(vv: SiteViewValueOrganizationList)(implicit messages: play.api.i18n.Messages)
+
+@views.html.common.layout.InnerContent("site-app-new-user-form", "content") {
+  @** --[ 見出し ]---------------------------------------------------------- *@
+  <h3 class="content__section header">
+    <span class="header__title">組織一覧</span>
+      <button class="button">
+        <a href="organization/add">
+          <span class="submit__text">新規作成</span>
+        </a>
+      </button>  
+  </h3>
+  <div class="content__section content">   
+    @for(organization <- vv.organizations) {
+      <article class="facility-list-item">
+        <a href="organization/@organization.id">
+          <div class="item-panel__wrapper">
+            <header class="facility-item__header">
+              <div class="name">
+                @organization.name
+              </div>
+            </header>
+            <section class="facility-item__content">
+              <div>
+                <div class="item-panel__content">
+                  <div class="address">
+                    <label class="inline">住所:</label>
+                    <p class="inline">
+                      @organization.address
+                    </p>
+                  </div>              
+                </div>
+              </div>
+            </section>
+          </div>
+        </a>
+      </article>
+    }
+  </div>
+}

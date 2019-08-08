@@ -10,10 +10,12 @@ package controllers.app
 import javax.inject.Inject
 import play.api.i18n.I18nSupport
 import play.api.mvc.{AbstractController, MessagesControllerComponents}
+
 import persistence.geo.dao.LocationDAO
 import persistence.udb.dao.UserDAO
 import persistence.geo.model.Location
 import persistence.udb.model.User.formForNewUser
+
 import model.site.app.SiteViewValueNewUser
 import model.component.util.ViewValuePageLayout
 

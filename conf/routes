@@ -9,21 +9,43 @@ POST  /app/new-user                     controllers.app.NewUserCommitController.
 
 
 # --[ 施設ページ ]----------------------------------------------------------------
-GET  /facility/list                    controllers.facility.FacilityController.list
-GET  /facility/show/:id        controllers.facility.FacilityController.show(id:Long)
-GET  /facility/edit/:id        controllers.facility.FacilityController.edit(id:Long)
-POST /facility/update/:id      controllers.facility.FacilityController.update(id: Long)
+# facilityの一覧を取得
+GET     /facility controllers.facility.FacilityController.list
 
-GET /facility/add           controllers.facility.FacilityController.add
-POST /facility              controllers.facility.FacilityController.create
+# facilityを検索するためのformを取得
+GET     /facility/search                  controllers.facility.FacilityController.search
 
-GET  /facility/getSubLocations/:prefId controllers.facility.FacilityController.getSubLocations(prefId:String)
-# GET  /facility/create                  controllers.facility.FacilityController.create
-GET  /facility/search                  controllers.facility.FacilityController.search
-# -- [ 特集ページ ] --------------------------------------------------------------
+# facilityを作成
+POST    /facility                         controllers.facility.FacilityController.create
+
+# facilityを作成するためのformを取得
+# newは予約語だからコントローラー名にできない
+GET     /facility/add                     controllers.facility.FacilityController.add
+
+# 既存のfacilityを編集するためのformを取得
+GET     /facility/:id/edit                controllers.facility.FacilityController.edit(id: Long)
+
+# 既存のfacilityを取得
+GET     /facility/:id                     controllers.facility.FacilityController.show(id: Long)
+
+# 既存のfacilityを削除
+# <form>タグではDELETEやPUTを送れない
+GET     /facility/delete/:id              controllers.facility.FacilityController.delete(id: Long)
+
+
+# --[組織ページ]---------------------------------------------------------------
+GET     /organization               controllers.organization.OrganizationController.list
+POST    /organization               controllers.organization.OrganizationController.create
+GET     /organization/add           controllers.organization.OrganizationController.add
+GET     /organization/:id           controllers.organization.OrganizationController.show(id: Long)
+GET     /organization/:id/edit      controllers.organization.OrganizationController.edit(id: Long)
+GET     /organization/delete/:id    controllers.organization.OrganizationController.delete(id: Long)
+
+# --[ 特集ページ ]--------------------------------------------------------------
 GET  /recruit/intership-for-summer-21  controllers.recruit.InternshipForSummer21Controller.view
 
 # --[ その他 ]------------------------------------------------------------------
 GET  /assets/*file  controllers.Assets.versioned(path = "/public", file)
 GET  /              controllers.ApplicationController.redirect(to = "/recruit/intership-for-summer-21", from = "")
-GET  /*path         controllers.ApplicationController.redirect(to = "/recruit/intership-for-summer-21", path: String)
+# GET  /*path         controllers.ApplicationController.redirect(to = "/recruit/intership-for-summer-21", path: String)
+

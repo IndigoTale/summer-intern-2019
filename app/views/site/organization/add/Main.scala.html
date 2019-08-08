@@ -1,0 +1,19 @@
+@import model.site.organization.SiteViewValueOrganizationAdd
+@import play.api.data.Form
+
+@import persistence.organization.model.OrganizationAdd
+
+@** template内で利用する変数定義 *@
+@(vv: SiteViewValueOrganizationAdd, form: Form[OrganizationAdd])(implicit messages: play.api.i18n.Messages)
+
+@views.html.common.layout.Default(vv.layout) {
+  @views.html.common.layout.ContentLayout(
+    id      = "site-facility-add",
+    content = tplContent
+  )
+}
+
+@** テンプレート: コンテンツ *@
+@tplContent = {
+  @views.html.site.organization.add._Form(vv.location, form)
+}

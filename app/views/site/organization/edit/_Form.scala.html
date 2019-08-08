@@ -1,0 +1,30 @@
+@import views.html.helper
+@import model.site.organization.SiteViewValueOrganizationEdit
+@import play.api.data.Form
+
+@import persistence.organization.model.Organization
+@import persistence.organization.model.OrganizationEdit
+@import persistence.geo.model.Location
+
+
+@(location: Seq[Location], organization: Option[Organization], form: Form[OrganizationEdit])(implicit messages: play.api.i18n.Messages)
+@if(organization.isEmpty == false) {
+    @helper.form( action = controllers.organization.routes.OrganizationController.edit(organization.get.id.get)) {
+        <div>
+            @helper.select(
+                field   = form("locationId"),
+                options = location.map(v => (v.id, v.nameCity.get)),
+                '_label           -> "市",
+                '_default         -> "未選択",
+                '_showConstraints -> false
+            )
+            @helper.inputText(form("name"), 'placeholder -> organization.get.name)
+            @helper.inputText(form("address"), 'placeholder -> organization.get.address)            
+            <button class="button">編集</button>
+            <button class="button"><a href="/organization">戻る</a></button>
+            <button class="button"><a href="/organization/delete/@organization.get.id.get ">削除</a></button>
+        <div>
+    }
+} else {
+    <div>存在しないidです</div>
+}

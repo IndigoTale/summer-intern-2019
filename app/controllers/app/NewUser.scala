@@ -9,8 +9,10 @@ package controllers.app
 
 import play.api.i18n.I18nSupport
 import play.api.mvc.{AbstractController, MessagesControllerComponents}
+
 import model.site.app.SiteViewValueNewUser
 import model.component.util.ViewValuePageLayout
+
 import persistence.geo.model.Location
 import persistence.geo.dao.LocationDAO
 import persistence.udb.model.User.formForNewUser

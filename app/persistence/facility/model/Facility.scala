@@ -11,6 +11,7 @@ import play.api.data._
 import play.api.data.Forms._
 import java.time.LocalDateTime
 import persistence.geo.model.Location
+import persistence.organization.model.Organization
 
 // 施設情報 (sample)
 //~~~~~~~~~~~~~
@@ -19,28 +20,30 @@ case class Facility(
   locationId:  Location.Id,                        // 地域ID
   name:        String,                             // 施設名
   address:     String,                             // 住所(詳細)
-  description: String,                             // 施設説明
+  description: String,                             // 施設説明  
   updatedAt:   LocalDateTime = LocalDateTime.now,  // データ更新日
-  createdAt:   LocalDateTime = LocalDateTime.now   // データ作成日
+  createdAt:   LocalDateTime = LocalDateTime.now,  // データ作成日
+  organizationId: Option[Organization.Id],         // 組織ID
 )
 
 // 施設検索
 case class FacilitySearch(
   locationIdOpt: Option[Location.Id]
 )
+
 case class FacilityEdit(
-  locationId: Option[Location.Id],
-  name: Option[String],
-  address: Option[String],
-  description: Option[String]
+  name: String,
+  address: String,
+  description: String,
 )
-// 施設追加
+
 case class FacilityAdd(
-  locationId: Option[Location.Id],
-  name: Option[String],
-  address: Option[String],
-  description: Option[String]
+  locationId: Location.Id,
+  name: String,
+  address: String,
+  description: String,
 )
+
 // コンパニオンオブジェクト
 //~~~~~~~~~~~~~~~~~~~~~~~~~~
 object Facility {
@@ -49,6 +52,7 @@ object Facility {
   type Id = Long
 
   // --[ フォーム定義 ]---------------------------------------------------------
+  // https://www.playframework.com/documentation/ja/2.4.x/ScalaForms
   val formForFacilitySearch = Form(
     mapping(
       "locationId" -> optional(text),
@@ -56,18 +60,17 @@ object Facility {
   )
   val formForFacilityEdit = Form(
     mapping(
-      "name" -> optional(text),
-      "address" -> optional(text),
-      "description" -> optional(text),
-      "locationId" -> optional(text),
+      "name"        -> nonEmptyText,
+      "address"     -> nonEmptyText,
+      "description" -> text,
     )(FacilityEdit.apply)(FacilityEdit.unapply)
   )
   val formForFacilityAdd = Form(
     mapping(
-      "name" -> optional(text),
-      "address" -> optional(text),
-      "description" -> optional(text),
-      "locationId" -> optional(text),
+      "locationId" -> text,
+      "name" -> text,
+      "address" -> text,
+      "description" -> text
     )(FacilityAdd.apply)(FacilityAdd.unapply)
   )
 }

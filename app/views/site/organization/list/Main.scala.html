@@ -1,0 +1,17 @@
+@import model.site.organization.SiteViewValueOrganizationList
+@import play.api.data.Form
+
+@** template内で利用する変数定義 *@
+@(vv: SiteViewValueOrganizationList)(implicit messages: play.api.i18n.Messages)
+
+@views.html.common.layout.Default(vv.layout) {
+  @views.html.common.layout.ContentLayout(
+    id      = "site-facility-list",
+    content = tplContent
+  )
+}
+
+@** テンプレート: コンテンツ *@
+@tplContent = {
+  @views.html.site.organization.list._List(vv)
+}

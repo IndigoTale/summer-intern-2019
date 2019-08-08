@@ -1,0 +1,20 @@
+@import model.site.facility.SiteViewValueFacilityShow
+@import play.api.data.Form
+
+@** 施設一覧/検索 *@
+@import persistence.facility.model.FacilitySearch
+
+@** template内で利用する変数定義 *@
+@(vv: SiteViewValueFacilityShow, form: Form[FacilitySearch])(implicit messages: play.api.i18n.Messages)
+
+@views.html.common.layout.Default(vv.layout) {
+  @views.html.common.layout.ContentLayout(
+    id      = "site-facility-show",
+    content = tplContent
+  )
+}
+
+@** テンプレート: コンテンツ *@
+@tplContent = {
+  @views.html.site.facility.show._Id(vv, form)
+}

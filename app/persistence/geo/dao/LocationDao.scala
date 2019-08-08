@@ -11,6 +11,7 @@ import java.time.LocalDateTime
 import scala.concurrent.Future
 
 import slick.jdbc.JdbcProfile
+// slick: RDBへのコネクターっぽいもの
 import play.api.db.slick.DatabaseConfigProvider
 import play.api.db.slick.HasDatabaseConfigProvider
 
@@ -36,6 +37,13 @@ class LocationDAO @javax.inject.Inject()(
       slick
         .filter(_.id === id)
         .result.headOption
+    }
+
+  def getCities(): Future[Seq[Location]] = 
+    db.run {
+      slick
+        .filter(_.nameCity.nonEmpty)
+        .result
     }
 
   /**

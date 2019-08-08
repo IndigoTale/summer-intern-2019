@@ -14,10 +14,8 @@ import slick.jdbc.JdbcProfile
 import play.api.db.slick.DatabaseConfigProvider
 import play.api.db.slick.HasDatabaseConfigProvider
 import persistence.facility.model.Facility
-import persistence.facility.model.FacilityEdit
-import persistence.facility.model.FacilityAdd
 import persistence.geo.model.Location
-import persistence.facility.model
+import persistence.organization.model.Organization
 
 // DAO: 施設情報
 //~~~~~~~~~~~~~~~~~~
@@ -33,22 +31,32 @@ class FacilityDAO @javax.inject.Inject()(
   /**
    * 施設を取得
    */
+  // https://www.scala-lang.org/api/2.12.4/scala/Some.html
   def get(id: Facility.Id): Future[Option[Facility]] =
     db.run {
       slick
         .filter(_.id === id)
         .result.headOption
     }
-  def update(id:Long,form:FacilityEdit) = 
-    db.run{
-      slick.filter(_.id === id)
-        .map(p => (p.name,p.address,p.description,p.locationId))
-        .update((form.name.get,form.address.get,form.description.get,form.locationId.get))
-    }
-  def create (form:FacilityAdd) =
+  def update(id: Long, name: String, address: String, description: String):  Unit  = 
     db.run {
       slick
-        .map(p => (p.locationId, p.name, p.address, p.description)) += ((form.locationId.get, form.name.get, form.address.get, form.description.get))
+        .filter(_.id === id)
+        .map(p => (p.name, p.address, p.description))
+        .update((name, address, description))
+    }
+  
+  def create(locationId: Location.Id ,name: String, address: String, description: String): Unit = 
+    db.run {
+      slick
+        .map(p => (p.locationId, p.name, p.address, p.description)) += ((locationId, name, address, description))
+    }
+
+  def delete(id: Long): Unit = 
+    db.run {
+      slick
+        .filter(_.id === id)
+        .delete
     }
 
   /**
@@ -79,14 +87,15 @@ class FacilityDAO @javax.inject.Inject()(
     /* @2 */ def locationId    = column[Location.Id]    ("location_id")
     /* @3 */ def name          = column[String]         ("name")
     /* @4 */ def address       = column[String]         ("address")
-    /* @5 */ def description   = column[String]         ("description")
+    /* @5 */ def description   = column[String]         ("description")             
     /* @6 */ def updatedAt     = column[LocalDateTime]  ("updated_at")
     /* @7 */ def createdAt     = column[LocalDateTime]  ("created_at")
+             def organizationId= column[Option[Organization.Id]]("organization_id")
 
     // The * projection of the table
     def * = (
       id.?, locationId, name, address, description,
-      updatedAt, createdAt
+      updatedAt, createdAt, organizationId
     ) <> (
       /** The bidirectional mappings : Tuple(table) => Model */
       (Facility.apply _).tupled,

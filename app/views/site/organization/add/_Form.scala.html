@@ -1,0 +1,21 @@
+@import persistence.organization.model._
+@import persistence.geo.model.Location
+
+
+@(location: Seq[Location], form: Form[OrganizationAdd])(implicit messages: play.api.i18n.Messages)
+
+@helper.form( action = controllers.organization.routes.OrganizationController.create) {
+    <div>
+        @helper.select(
+            field   = form("locationId"),
+            options = location.map(v => (v.id, v.nameCity.get)),
+            '_label           -> "市",
+            '_default         -> "未選択",
+            '_showConstraints -> false
+        )
+        @helper.inputText(form("name"))
+        @helper.inputText(form("address"))
+        <button class="button">追加</button>
+        <button class="button"><a href="/organization">戻る</a></button>
+    <div>
+}
